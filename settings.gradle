@@ -1,0 +1,3 @@
+rootProject.name = "ZPlugin"
+include ':app'
+include ':plugin'
