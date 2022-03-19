@@ -10,7 +10,8 @@ import dalvik.system.PathClassLoader;
 
 public class LoadUtil {
 
-    private static String apkPath = "/sdcard/test.dex";
+//    private static String apkPath = "/sdcard/test.dex";
+    private static String apkPath = "/sdcard/plugin-debug.apk";
 
     public static void loadClass(Context context){
         // 获取 pathList 的字段
