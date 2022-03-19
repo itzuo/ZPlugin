@@ -1,5 +1,6 @@
 package com.zxj.zplugin;
 
+import android.os.Build;
 import android.os.Handler;
 
 import java.lang.reflect.Field;
@@ -9,12 +10,18 @@ public class HookHandler {
     public static String TARGET_INTENT = "target_intent";
     public static void hookAMS(){
         try {
-            //获取Singleton对象
-            Class<?> activityManagerClass = Class.forName("android.app.ActivityManager");
-            //获取activityManager中的IActivityManagerSingleton 字段
-            Field iActivityManagerSingletonField = activityManagerClass.getDeclaredField("IActivityManagerSingleton");
-            iActivityManagerSingletonField.setAccessible(true);
-            Object singleton = iActivityManagerSingletonField.get(null);//获取到获取Singleton对象实例
+            Field singletonField;
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){// 适配8.0以下
+                Class<?> activityManagerNativeClass = Class.forName("android.app.ActivityManagerNative");
+                singletonField = activityManagerNativeClass.getDeclaredField("gDefault");
+            }else { //适配8.0、9.0
+                //获取Singleton对象
+                Class<?> activityManagerClass = Class.forName("android.app.ActivityManager");
+                //获取activityManager中的IActivityManagerSingleton 字段
+                singletonField = activityManagerClass.getDeclaredField("IActivityManagerSingleton");
+            }
+            singletonField.setAccessible(true);
+            Object singleton = singletonField.get(null);//获取到获取Singleton对象实例
 
             //获取系统的IActivityManager对象
             Class<?> singletonClass = Class.forName("android.util.Singleton");

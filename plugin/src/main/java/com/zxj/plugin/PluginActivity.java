@@ -10,7 +10,7 @@ public class PluginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_plugin);
+//        setContentView(R.layout.activity_plugin);
         Log.e("zxj","onCreate：启动PluginActivity");
     }
 }
