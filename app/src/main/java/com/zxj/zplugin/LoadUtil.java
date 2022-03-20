@@ -1,9 +1,12 @@
 package com.zxj.zplugin;
 
 import android.content.Context;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import dalvik.system.DexClassLoader;
 import dalvik.system.PathClassLoader;
@@ -62,5 +65,24 @@ public class LoadUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static Resources loadResource(Context context){
+        AssetManager assetManager = createAssetManager(apkPath);
+        Resources resources = context.getResources();
+        // 加载插件的资源的 resources
+        return new Resources(assetManager,resources.getDisplayMetrics(),resources.getConfiguration());
+    }
+
+    private static AssetManager createAssetManager(String apkPath) {
+        try {
+            AssetManager assetManager = AssetManager.class.newInstance();
+            Method addAssetPathMethod = AssetManager.class.getMethod("addAssetPath", String.class);
+            addAssetPathMethod.invoke(assetManager,apkPath);
+            return assetManager;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
